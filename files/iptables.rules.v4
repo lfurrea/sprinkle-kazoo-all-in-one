@@ -1,0 +1,22 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:fail2ban-ssh - [0:0]
+:allow_services - [0:0]
+-A INPUT -p tcp -m multiport --dports 22 -j fail2ban-ssh
+-A INPUT -i lo -j ACCEPT
+-A INPUT -j allow_services
+-A fail2ban-ssh -j RETURN
+-A allow_services -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A allow_services -p tcp --dport ssh -j ACCEPT
+-A allow_services -s 45.56.66.251/32 -j ACCEPT
+-A allow_services -s 45.56.122.39/32 -j ACCEPT
+-A allow_services -s 45.33.20.111/32 -j ACCEPT
+-A allow_services -s 45.33.3.87/32 -j ACCEPT
+-A allow_services -s 45.33.121.178/32 -j ACCEPT
+-A allow_services -s 45.33.4.121/32 -j ACCEPT
+-A allow_services -s 45.33.0.119/32 -j ACCEPT
+-A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 7
+-A INPUT -j DROP
+COMMIT
