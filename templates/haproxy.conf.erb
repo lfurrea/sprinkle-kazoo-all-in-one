@@ -1,6 +1,5 @@
 global
-        log 127.0.0.1   local0
-        log 127.0.0.1   local1 notice
+	log /dev/log    local0 info
         maxconn 4096
         user haproxy
         group haproxy
@@ -11,9 +10,11 @@ defaults
         mode http
         option httplog
         option dontlognull
+	option log-health-checks
         option redispatch
         option httpchk GET /
         option allbackups
+	option http-server-close
         maxconn 2000
         retries 3
         timeout connect 6000ms
